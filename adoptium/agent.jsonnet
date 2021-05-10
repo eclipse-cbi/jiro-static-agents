@@ -73,17 +73,17 @@ local newDeployment(projectName, agentName) = {
                   imagePullPolicy: "Always",
                   resources: {
                     limits: {
-                      cpu: 1,
-                      memory: "1Gi",
+                      cpu: 2,
+                      memory: "2Gi",
                     },
                     requests: {
-                      cpu: 1,
-                      memory: "1Gi",
+                      cpu: 2,
+                      memory: "2Gi",
                     },
                   },
-                  command: ["uid_entrypoint", "/bin/bash", "-c"],
+                  command: ["uid_entrypoint", "/usr/bin/dumb-init", "--", "/bin/bash", "-c"],
                   args: [ |||
-                      java -jar /usr/share/jenkins/agent.jar \
+                      exec java -Xmx512m -jar /usr/share/jenkins/agent.jar \
                       -jnlpUrl https://ci.adoptopenjdk.net/computer/eclipse-codesign-machine/slave-agent.jnlp \
                       -secret @"%s/%s" \
                       -workDir "%s"
@@ -94,8 +94,8 @@ local newDeployment(projectName, agentName) = {
                       mountPath: $.project.workDir,
                       name: "workdir",
                     }, {
-                      mountPath: "/home/jenkins/.jenkins",
-                      name: "dotjenkins"
+                      mountPath: "/home/jenkins/",
+                      name: "jenkinshome"
                     }, {
                       mountPath: $.secretMountPath,
                       name: "agent-secret"
@@ -113,7 +113,7 @@ local newDeployment(projectName, agentName) = {
                 },
                 {
                   emptyDir: {},
-                  name: "dotjenkins",
+                  name: "jenkinshome",
                 },
                 {
                   emptyDir: {},

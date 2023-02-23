@@ -69,7 +69,7 @@ local newDeployment(projectName, agentName) = {
               containers: [
                 {
                   name: "agent",
-                  image: "eclipsecbi/jiro-agent-basic:latest",
+                  image: "eclipsecbi/jiro-agent-basic:remoting-4.13.3",
                   imagePullPolicy: "Always",
                   resources: {
                     limits: {
@@ -84,7 +84,7 @@ local newDeployment(projectName, agentName) = {
                   command: ["uid_entrypoint", "/usr/bin/dumb-init", "--", "/bin/bash", "-c"],
                   args: [ |||
                       exec java -Xmx512m -jar /usr/share/jenkins/agent.jar \
-                      -jnlpUrl https://ci.adoptopenjdk.net/computer/eclipse-codesign-machine/slave-agent.jnlp \
+                      -jnlpUrl https://ci.adoptium.net/computer/eclipse-codesign-machine/slave-agent.jnlp \
                       -secret @"%s/%s" \
                       -workDir "%s"
                     ||| % [$.secretMountPath, $.secretTokenName, $.project.workDir]

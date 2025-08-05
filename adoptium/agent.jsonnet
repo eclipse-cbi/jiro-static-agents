@@ -69,7 +69,7 @@ local newDeployment(projectName, agentName) = {
               containers: [
                 {
                   name: "agent",
-                  image: "eclipsecbi/jiro-agent-basic-ubuntu:remoting-3301.v4363ddcca_4e7",
+                  image: "eclipsecbi/jiro-agent-basic-ubuntu:remoting-3309.v27b_9314fd1a_4",
                   imagePullPolicy: "Always",
                   resources: {
                     limits: {
